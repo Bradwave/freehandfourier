@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=0.5, maximum-scale=1">
+
+    <meta name="description" content="Trigonometric polynomial">
+    <meta name=" keywords" content="complex, trigonometric polynomial">
+
+    <title>freehandfourier</title>
+
+    <!--link rel="icon" type="image/svg" href="imgs/icons/person_raised_hand.svg"-->
+    <link rel="stylesheet" href="css/clear-days.css">
+    <link rel="stylesheet" href="css/fonts/noto.css">
+    <link rel="stylesheet" href="css/icons/material-icons.css">
+
+    <!-- MathJax -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        MathJax = {
+            loader: { load: ['[tex]/mathtools', '[tex]/newcommand'] },
+            tex: {
+                packages: { '[+]': ['mathtools', 'newcommand'] },
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                tags: 'ams',
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="page-container" class="page-container hidden transparent sans-serif-font">
+        <div id="plot-and-sliders-container">
+            <div id="freehandfourier-plot-container" class="plot-container">
+                <!-- Plot -->
+                <div id="freehandfourier-plot" class="plot">
+                    <!-- Axis canvas -->
+                    <canvas id="freehandfourier-canvas" name="plot" class="plot main">
+                    </canvas>
+                    <!-- Drawing canvas -->
+                    <canvas id="drawing-freehandfourier-canvas" name="plot" class="plot stacked">
+                    </canvas>
+                    <!-- Epicycles canvas -->
+                    <canvas id="epicycles-freehandfourier-canvas" name="plot" class="plot stacked">
+                    </canvas>
+                    <!-- Path canvas -->
+                    <canvas id="path-freehandfourier-canvas" name="plot" class="plot stacked">
+                    </canvas>
+                    <!-- Points canvas -->
+                    <canvas id="points-freehandfourier-canvas" name="plot" class="plot stacked">
+                    </canvas>
+                    <!-- Zoom out button -->
+                    <button id="freehandfourier-plot-zoom-out" class="plot-control round-button zoom-in">
+                        <span class="material-symbols-rounded bold-button">
+                            remove
+                        </span>
+                    </button>
+                    <!-- Zoom in button -->
+                    <button id="freehandfourier-plot-zoom-in" class="plot-control round-button zoom-out">
+                        <span class="material-symbols-rounded bold-button">
+                            add
+                        </span>
+                    </button>
+                    <!-- Plot refresh button -->
+                    <button id="freehandfourier-plot-refresh" class="plot-control round-button plot-refresh">
+                        <span class="material-symbols-rounded">
+                            refresh
+                        </span>
+                    </button>
+                    <!-- Toggle grid button -->
+                    <button id="freehandfourier-plot-toggle-grid" class="plot-control round-button toggle-grid">
+                        <span class="material-symbols-rounded grid-icon">
+                            grid_4x4
+                        </span>
+                    </button>
+                    <!-- Toggle epicycles -->
+                    <button id="freehandfourier-plot-toggle-epicycles"
+                        class="plot-control round-button toggle-epicycles">
+                        <span class="material-symbols-rounded grid-icon">
+                            architecture
+                        </span>
+                    </button>
+                    <!-- Toggle full screen button -->
+                    <button id="freehandfourier-plot-toggle-fullscreen" class="plot-control round-button fullscreen">
+                        <span id="freehandfourier-plot-toggle-fullscreen-icon" class="material-symbols-rounded">
+                            fullscreen
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="freehandfourier-plot-sliders-container" class="sliders-container centered">
+                <!-- Sliders panel, it puts the slider in column -->
+                <div id="freehandfourier-plot-sliders-panel"
+                    class="vertical-options-panel-group plot-sliders-panel midsize">
+                    <!-- Group comprised of play/pause button and param value -->
+                    <div class="plot-slider-controls-group">
+                        <!-- Play/pause button -->
+                        <button id="play-button" class="round-button glass-grey slider-control">
+                            <span id="play-icon" class="material-symbols-rounded">
+                                pause
+                            </span>
+                        </button>
+                        <!-- Previous button -->
+                        <button id="previous-button" class="round-button glass-grey slider-control">
+                            <span id="previous-icon" class="material-symbols-rounded">
+                                skip_previous
+                            </span>
+                        </button>
+                        <!-- Next button -->
+                        <button id="next-button" class="round-button glass-grey slider-control">
+                            <span id="next-icon" class="material-symbols-rounded">
+                                skip_next
+                            </span>
+                        </button>
+                        <!-- Next button -->
+                        <button id="drawing-button" class="round-button glass-grey slider-control">
+                            <span id="drawing-icon" class="material-symbols-rounded">
+                                draw
+                            </span>
+                        </button>
+                    </div>
+
+                    <!-- Sliders panel group for param "N" -->
+                    <div id="freehandfourier-param-N-group" class="plot-slider-group">
+                        <!-- Group comprised of number of coefficient and slider -->
+                        <div class="plot-slider-controls-group">
+                            <!-- Number of coefficients -->
+                            <div class="plot-slider-value-container">
+                                <span id="freehandfourier-param-N-value" class="plot-slider-value">$N = 0$</span>
+                            </div>
+                            <!-- Slider -->
+                            <input id="freehandfourier-param-N" class="plot-slider" type="range" min="0" max="100"
+                                value="0" step="1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="fullscreen-container" class="fullscreen-container"></div>
+    <div id="fullscreen-sliders-container" class="fullscreen-container"></div>
+
+    <!-- Spinning loader -->
+
+    <div id="loading-container" class="loading-container">
+        <div class="general loader"></div>
+    </div>
+
+    <!-- JS files -->
+
+    <script src="js/src/util/utils.js"></script>
+    <script src="js/src/util/math-utils.js"></script>
+    <script src="js/src/page-controller.js"></script>
+    <script src="js/src/util/coordinate-system.js"></script>
+    <script src="js/src/plots/plot-structure.js"></script>
+    <script src="js/src/plots/freehandfourier-plot.js"></script>
+    <script src="js/src/plots/plots-manager.js"></script>
+</body>

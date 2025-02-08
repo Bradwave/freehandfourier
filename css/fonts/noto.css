@@ -1,0 +1,26 @@
+@font-face {
+    font-family: 'Noto Sans';
+    font-stretch: auto;
+    /* Note that font-stretch is a % of normal width */
+    font-style: normal;
+    font-weight: 100 900;
+    src: url(noto-sans/NotoSans-VariableFont_wdth\,wght.ttf) format('woff2');
+}
+
+@font-face {
+    font-family: 'Noto Sans';
+    font-stretch: auto;
+    /* Note that font-stretch is a % of normal width */
+    font-style: italic;
+    font-weight: 100 900;
+    src: url(noto-sans/NotoSans-Italic-VariableFont_wdth\,wght.ttf) format('woff2');
+}
+
+@font-face {
+    font-family: 'Noto Sans Mono';
+    font-stretch: auto;
+    /* Note that font-stretch is a % of normal width */
+    font-style: normal;
+    font-weight: 100 900;
+    src: url(noto-sans-mono/NotoSansMono-VariableFont_wdth\,wght.ttf) format('woff2');
+}

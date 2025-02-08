@@ -1,0 +1,921 @@
+/* Styling for the Turing Pattern */
+
+/* ==================================
+    Table of content
+    ----------------
+    1. Global
+        1.1 Fonts
+        1.2 Variables
+        1.3 Selection
+        1.4 Scrollbar
+        1.5 Focus
+    2. Components
+        2.1 Body and page container
+          - 2.1.1 Body
+          - 2.1.2 Page container and content
+          - 2.1.3 Separator
+        2.2 Canvas
+          - 2.2.1 Plot container
+          - 2.2.2 Plot
+          - 2.2.3 Canvas
+          - 2.2.4 Plot controls buttons
+            - 2.2.4.1 Plot controls buttons
+            - 2.2.4.2 Plot controls icons
+            - 2.2.4.3 Plot sliders
+              - 2.2.4.3.1 Slider thumb
+              - 2.2.4.3.2 Slider track
+              - 2.2.4.3.3 Slider controls and options
+        2.3 Option panels
+          - 2.3.1 Panel groups
+          - 2.3.2 Round button
+          - 2.3.3 Glass button
+        2.4 Loaders
+          - 2.4.1 Plot loader
+          - 2.4.2 General loader
+          - 2.5.3 Loading container
+        2.5 Input boxes and sliders
+          - 2.5.1 Input box
+        
+===================================== */
+
+/* ============================
+    1. Global
+    =============================== */
+
+/* === 1.1 Fonts === */
+
+/* See "fonts" folder */
+
+/* === 1.2 Variables === */
+
+:root {
+    /* -- Colors -- */
+    --background: #ffffff;
+    --accent: #1484e6;
+    --light-accent: #54a3e8;
+    --very-light-accent: #94c2ea;
+    --incredibly-light-accent: #d9e1e7;
+    --very-transparent-accent: #2d8cdf80;
+    --incredibly-transparent-accent: #298be037;
+    --transparent-accent: #1484e6cc;
+    --crimson-red: #B01A00;
+    --primary: #000000;
+    --primary-rbg: 0, 0, 0;
+    --highlight: #ffffff;
+    --transparent-highlight: #ffffff6e;
+    --very-light-grey: #e1e1e1;
+    --light-grey: #c8c8c8;
+    --mildly-transparent-light-grey: #c8c8c85b;
+    --transparent-light-grey: #ececec78;
+    /* alternative transparent light-grey color: #f2f2f278 */
+    --light-mid-grey: #939393;
+    --mid-grey: #555555;
+    --transparent-mid-grey: #d7d7d778;
+    --dark-grey: #222222;
+    --transparent-dark-grey: #2222225d;
+    --secondary: #333333;
+    --thm-blue: #1484E6;
+    --thm-blue-rgb: 20, 132, 230;
+    --def-orange: #FD8B28;
+    --def-orange-rgb: 253, 139, 40;
+    /* Button background and button icon colors */
+    --button-inactive-color: var(--light-grey);
+    --button-hover-color: var(--accent);
+    --button-active-color: var(--accent);
+    --button-locked-color: var(--light-grey);
+    --button-text-inactive-color: var(--dark-grey);
+    --button-text-hover-color: var(--highlight);
+    --button-text-active-color: var(--highlight);
+    --button-text-locked-color: var(--mid-grey);
+    /* -- Fonts -- */
+    /* Font sizes */
+    --default-font-size: 14pt;
+    --min-font-size: 12pt;
+    --max-font-size: 28pt;
+    /* Font weights */
+    --regular-weight: 400;
+    --bold-weight: 700;
+    /* Font styles */
+    /* -- Font families -- */
+    --sans-serif-font: 'Noto Sans', sans-serif;
+    --mono-font: 'Noto Sans Mono', monospace;
+    /* -- Dimensions -- */
+    /* Buttons */
+    --button-diameter: 30px;
+    --button-radius: calc(var(--button-diameter) / 2);
+    --button-icon-diameter: calc(22 / 30 * var(--button-diameter));
+    --options-height: calc(var(--button-diameter) * 1.5);
+    --options-border-radius: calc(var(--options-height) / 2);
+    /* Containers and options capsules */
+    --options-margin: 10px;
+    --options-padding: 10px;
+    --options-gap: 10px;
+    --options-small-gap: 5px;
+    /* Plot sliders panel */
+    --plot-sliders-panel-fullscreen-top: calc(2 * var(--options-margin) + var(--button-diameter));
+    /* Plot sliders */
+    --plot-slider-thumb-diameter: 16px;
+    --plot-slider-thumb-radius: calc(var(--plot-slider-thumb-diameter) / 2);
+    --plot-slider-track-height: 6px;
+    /* -- Effects -- */
+    --active-button-scale: 1.05;
+    --backdrop-blur: 10px;
+    /* -- Opacities -- */
+    --button-inactive-opacity: 0.7;
+    --button-hover-opacity: 0.8;
+    --button-active-opacity: 1;
+    --button-locked-opacity: 0.5;
+    /* -- Times and durations -- */
+    --general-transition-duration: 0.1s;
+    --general-long-transition-duration: 0.2s;
+    --button-active-transition-duration: 0.01s;
+    --slider-general-transition-duration: 0.1s;
+}
+
+/* === 1.3 Selection === */
+
+/* Disable highlight rectangle on mobile */
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+::-moz-selection {
+    color: var(--highlight);
+    background: var(--accent);
+}
+
+::selection {
+    color: var(--highlight);
+    background: var(--accent);
+}
+
+/* === 1.4 Scrollbar === */
+
+::-webkit-scrollbar {
+    width: var(--scrollbar-width);
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(var(--primary-rbg), 0.1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--primary-rbg), 0.2);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: var(--accent);
+}
+
+/* === 1.5 Focus === */
+
+*:focus-visible:not(input.input-box) {
+    outline: solid var(--accent) 3px;
+    outline-offset: 2px;
+}
+
+/* ============================
+    2. Components
+=============================== */
+
+/* === 2.1 Body and page container === */
+
+/* -- 2.1.1 Body -- */
+
+html {
+    margin: 0;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    background-color: var(--background);
+    color: var(--secondary);
+    opacity: 1;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    -webkit-transition: all var(--general-transition-duration) ease-in-out;
+    -moz-transition: all var(--general-transition-duration) ease-in-out;
+    -ms-transition: all var(--general-transition-duration) ease-in-out;
+    -o-transition: all var(--general-transition-duration) ease-in-out;
+    transition: all var(--general-transition-duration) ease-in-out;
+}
+
+/* Sets the body opacity to 0 */
+body.transparent {
+    opacity: 0;
+}
+
+/* Hides the scrollbar of the body */
+body.hidden-overflow {
+    overflow: hidden;
+}
+
+/* -- 2.1.2 Page container and content -- */
+
+/* The page container contains the page content, but it doesn't contain the controllers. */
+.page-container {
+    font-family: var(--sans-serif-font);
+    visibility: visible;
+    opacity: 1;
+    -webkit-transition: opacity 0.1s ease-in-6ut, grid-template-columns 0.5s ease-in-out;
+    -moz-transition: opacity 0.1s ease-in-out, grid-template-columns 0.5s ease-in-out;
+    -ms-transition: opacity 0.1s ease-in-out, grid-template-columns 0.5s ease-in-out;
+    -o-transition: opacity 0.1s ease-in-out, grid-template-columns 0.5s ease-in-out;
+    transition: opacity 0.1s ease-in-out, grid-template-columns 0.5s ease-in-out;
+}
+
+/* The page container is hidden */
+.page-container.hidden {
+    visibility: hidden;
+}
+
+/* The page container is visible*/
+.page-container.visible {
+    visibility: visible;
+}
+
+/* The page container opacity is set to 0 */
+.page-container.transparent {
+    opacity: 0;
+}
+
+/* The page container opacity is set to 1 */
+.page-container.opaque {
+    opacity: 1;
+}
+
+/* The sans-serif font family is applied */
+.page-container.sans-serif-font {
+    font-family: var(--sans-serif-font);
+}
+
+/* -- 2.1.3 Separator -- */
+
+div.small-separator {
+    margin-top: 5px;
+}
+
+/* === 2.2 Canvas === */
+
+/* -- 2.2.1 Plot container -- */
+
+/* Div element used to center the plot. */
+div.plot-container {
+    position: relative;
+    display: grid;
+    place-items: center;
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
+/* Div container for fullscreen content: hen a plot goes to fullscreen mode, it goes here */
+div.fullscreen-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    visibility: hidden;
+    opacity: 1;
+    -webkit-transition: all var(--general-transition-duration) ease-in-out;
+    -moz-transition: all var(--general-transition-duration) ease-in-out;
+    -ms-transition: all var(--general-transition-duration) ease-in-out;
+    -o-transition: all var(--general-transition-duration) ease-in-out;
+    transition: all var(--general-transition-duration) ease-in-out;
+}
+
+/* Makes the fullscreen container visible */
+div.fullscreen-container.visible {
+    visibility: visible;
+}
+
+/* -- 2.2.2 Plot -- */
+
+/* Div container, parent of the plot; it's also used to move plot to fullscreen mode */
+div.plot {
+    position: relative;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: transparent;
+    overscroll-behavior: contain;
+    touch-action: none;
+    -webkit-transition: all var(--general-transition-duration) ease-in-out;
+    -moz-transition: all var(--general-transition-duration) ease-in-out;
+    -ms-transition: all var(--general-transition-duration) ease-in-out;
+    -o-transition: all var(--general-transition-duration) ease-in-out;
+    transition: all var(--general-transition-duration) ease-in-out;
+}
+
+#freehandfourier-plot {
+    width: 500px;
+    height: 500px;
+}
+
+/* On screens that are 500px or less, resizes the plot */
+@media screen and (max-width: 500px) {
+    #freehandfourier-plot {
+        width: 400px;
+    }
+}
+
+/* On screens that are 500px or less, resizes the plot */
+@media screen and (max-width: 400px) {
+    #freehandfourier-plot {
+        width: 300px;
+    }
+}
+
+/* On screens that are 500px or less, resizes the plot */
+@media screen and (max-width: 300px) {
+    #freehandfourier-plot {
+        width: 200px;
+    }
+}
+
+/* Class added to the plot when in fullscreen mode. */
+div.plot.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100dvw;
+    min-width: 100dvw;
+    max-width: 100dvw;
+    height: 100dvh;
+    min-height: 100dvh;
+    max-height: 100dvh;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    z-index: 90;
+}
+
+/* -- 2.2.3 Canvas -- */
+
+canvas {
+    -webkit-transition: all var(--general-transition-duration) ease-in-out;
+    -moz-transition: all var(--general-transition-duration) ease-in-out;
+    -ms-transition: all var(--general-transition-duration) ease-in-out;
+    -o-transition: all var(--general-transition-duration) ease-in-out;
+    transition: all var(--general-transition-duration) ease-in-out;
+}
+
+canvas.plot {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    border-radius: var(--button-radius);
+    cursor: crosshair;
+    overscroll-behavior: contain;
+}
+
+/* Needed when plots need to be stacked one on another */
+canvas.plot.stacked {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+/* Squares the border of the plot canvas */
+canvas.plot.squared-border {
+    border-radius: 0;
+}
+
+/* -- 2.2.4 Plot controls -- */
+
+/* -- 2.2.4.1 Plot controls buttons -- */
+
+/* General plot control button */
+button.round-button.plot-control {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    color: var(--mid-grey);
+    background-color: var(--transparent-highlight);
+    backdrop-filter: blur(5px);
+    cursor: pointer;
+}
+
+button.round-button.plot-control.transparent {
+    opacity: 0.4;
+}
+
+button.round-button.plot-control:hover {
+    color: var(--dark-grey);
+}
+
+button.round-button.plot-control:active {
+    background-color: var(--accent);
+    color: var(--highlight);
+    user-select: none;
+    opacity: 1;
+    transform: scale(var(--active-button-scale));
+    -webkit-transition: transform var(--button-active-transition-duration) ease-in-out;
+    -moz-transition: transform var(--button-active-transition-duration) ease-in-out;
+    -ms-transition: transform var(--button-active-transition-duration) ease-in-out;
+    -o-transition: transform var(--button-active-transition-duration) ease-in-out;
+    transition: transform var(--button-active-transition-duration) ease-in-out;
+}
+
+/* Zoom-in button (upper right corner) */
+button.zoom-in {
+    top: var(--options-margin);
+    right: calc(var(--options-margin) + var(--button-diameter) + var(--options-small-gap));
+}
+
+/* Zoom-out button (upper right corner) */
+button.zoom-out {
+    top: var(--options-margin);
+    right: var(--options-margin);
+}
+
+/* Toggle grid button */
+button.toggle-grid {
+    top: var(--options-margin);
+    left: calc(var(--options-margin) + var(--button-diameter) + var(--options-small-gap));
+    user-select: none;
+}
+
+/* Toggle grid button */
+button.toggle-epicycles {
+    top: var(--options-margin);
+    left: calc(var(--options-margin) + 2 * var(--button-diameter) + 2 * var(--options-small-gap));
+    user-select: none;
+}
+
+/* Refresh plot button */
+button.plot-refresh {
+    top: var(--options-margin);
+    left: var(--options-margin);
+    user-select: none;
+}
+
+/* Toggle fullscreen */
+button.fullscreen {
+    bottom: var(--options-margin);
+    right: var(--options-margin);
+    user-select: none;
+}
+
+/* -- 2.2.4.2 Plot controls icons -- */
+
+/* Makes the button icon bold */
+span.bold-button {
+    font-weight: 600;
+    user-select: none;
+}
+
+/* Decreases the size of the grid icon */
+span.grid-icon {
+    font-size: 22px;
+}
+
+/* -- 2.2.4.3 Plot sliders -- */
+
+/* Slider */
+input[type=range].plot-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    margin: 0;
+    border-radius: var(--plot-slider-thumb-radius);
+    background: transparent;
+    cursor: pointer;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+
+/* -- 2.2.4.3.1 Slider thumb -- */
+
+/* Slider thumb */
+input[type=range].plot-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: var(--plot-slider-thumb-diameter);
+    width: var(--plot-slider-thumb-diameter);
+    border: none;
+    border-radius: var(--plot-slider-thumb-radius);
+    background-color: var(--light-mid-grey);
+    -webkit-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+
+/* Slider thumb on hover */
+input[type=range].plot-slider::-webkit-slider-thumb:hover {
+    background: var(--accent);
+    box-shadow: 0 0 0 var(--plot-slider-thumb-radius) var(--incredibly-transparent-accent);
+}
+
+/* Slider thumb when active */
+input[type=range].plot-slider::-webkit-slider-thumb:active {
+    transform: scale(var(--active-button-scale));
+}
+
+/* Slider thumb in focus */
+input[type=range].plot-slider::-webkit-slider-thumb:focus {
+    background-color: var(--accent);
+    box-shadow: 0 0 0 var(--plot-slider-thumb-radius) var(--incredibly-transparent-accent);
+}
+
+/* Firefox */
+
+/* Slider thumb for Firefox */
+input[type=range]::-moz-range-thumb {
+    border: none;
+    height: var(--plot-slider-thumb-diameter);
+    width: var(--plot-slider-thumb-diameter);
+    border-radius: var(--plot-slider-thumb-radius);
+    background: var(--light-mid-grey);
+    -moz-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+
+/* Slider thumb on hover for Firefox */
+input[type=range].plot-slider::-moz-range-thumb:hover {
+    background-color: var(--light-accent);
+    box-shadow: 0 0 0 var(--plot-slider-thumb-radius) var(--incredibly-transparent-accent);
+}
+
+/* Slider thumb when active for Firefox */
+input[type=range].plot-slider::-moz-range-thumb:active {
+    background-color: var(--accent);
+}
+
+/* Slider thumb in focus for Firefox */
+input[type=range].plot-slider::-moz-range-thumb:hover {
+    background-color: var(--accent);
+    box-shadow: 0 0 0 var(--plot-slider-thumb-radius) var(--incredibly-transparent-accent);
+}
+
+/* -- 2.2.4.3.2 Slider track -- */
+
+/* Slider thumb */
+input[type=range].plot-slider::-webkit-slider-runnable-track {
+    height: var(--plot-slider-thumb-diameter);
+    border-radius: var(--plot-slider-thumb-radius);
+    background-color: var(--light-grey);
+    opacity: var(--button-inactive-opacity);
+    cursor: pointer;
+    -webkit-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+
+/* Changes the color when active */
+input[type=range].plot-slider::-webkit-slider-runnable-track:active {
+    background: var(--very-transparent-accent);
+    opacity: var(--button-active-opacity);
+}
+
+/* Firefox */
+
+/* Slider track on Firefox */
+input[type=range].plot-slider::-moz-range-track {
+    height: var(--plot-slider-thumb-diameter);
+    border-radius: calc(var(--plot-slider-track-height) / 2);
+    background-color: var(--light-grey);
+    opacity: var(--button-inactive-opacity);
+    cursor: pointer;
+    -webkit-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+
+/* Changes the color when active on Firefox */
+input[type=range].plot-slider::-moz-range-track:active {
+    background: var(--very-transparent-accent);
+    opacity: var(--button-active-opacity);
+}
+
+/* -- 2.2.4.3.3 Slider controls and options -- */
+
+/* Panel containing the sliders */
+div.vertical-options-panel-group.plot-sliders-panel {
+    margin: var(--options-margin);
+    padding: calc(1.5 * var(--options-padding));
+    background-color: var(--transparent-light-grey);
+}
+
+/* Centers the sliders */
+div.sliders-container.centered {
+    display: grid;
+    place-items: center;
+}
+
+/* Midsize panel (?) */
+div.vertical-options-panel-group.plot-sliders-panel.midsize {
+    width: 350px;
+}
+
+/* On screens that are 500px or less, resizes the sliders panel */
+@media screen and (max-width: 350px) {
+    #freehandfourier-plot {
+        width: 95dvw;
+    }
+}
+
+/* Fullscreen mode for the panel */
+div.vertical-options-panel-group.plot-sliders-panel.fullscreen {
+    position: fixed;
+    top: var(--plot-sliders-panel-fullscreen-top);
+    left: var(--options-margin);
+    margin: 0;
+    background-color: var(--transparent-highlight);
+    backdrop-filter: blur(var(--backdrop-blur));
+    z-index: 999;
+    /* aah... why?! */
+}
+
+/* Group containing a single slider and its controls */
+div.plot-slider-group {
+    display: flex;
+    flex-flow: column nowrap;
+    align-content: space-between;
+    justify-content: center;
+    gap: var(--options-small-gap);
+    width: 100%;
+    padding: 0;
+}
+
+/* Group containing the sliders controls and its value */
+div.plot-slider-controls-group {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: var(--options-gap);
+}
+
+/* It contains the slider value span */
+div.plot-slider-value-container {
+    display: grid;
+    place-items: center;
+    min-height: var(--button-diameter);
+    max-height: var(--button-diameter);
+    height: var(--button-diameter);
+    padding-left: calc(0.75 * var(--button-radius));
+    padding-right: calc(0.75 * var(--button-radius));
+    border-radius: var(--button-radius);
+    background-color: var(--mildly-transparent-light-grey);
+    color: var(--mid-grey);
+    font-size: calc(0.5 * var(--button-diameter));
+}
+
+button.round-button.slider-control:active {
+    background-color: var(--accent);
+    color: var(--highlight);
+    user-select: none;
+    opacity: 1;
+    transform: scale(var(--active-button-scale));
+    -webkit-transition: transform var(--button-active-transition-duration) ease-in-out;
+    -moz-transition: transform var(--button-active-transition-duration) ease-in-out;
+    -ms-transition: transform var(--button-active-transition-duration) ease-in-out;
+    -o-transition: transform var(--button-active-transition-duration) ease-in-out;
+    transition: transform var(--button-active-transition-duration) ease-in-out;
+}
+
+#drawing-button.active {
+    background-color: var(--accent);
+    color: var(--highlight);
+    user-select: none;
+}
+
+/* === 2.3 Options panels and buttons === */
+
+/* Panel containing options and controls */
+div.options-panel {
+    margin: var(--options-margin);
+    padding: var(--options-padding);
+    border-radius: var(--options-border-radius);
+    vertical-align: middle;
+    background-color: var(--transparent-light-grey);
+    backdrop-filter: blur(var(--backdrop-blur));
+    user-select: none;
+    -webkit-transition: all var(--general-transition-duration) ease-in-out;
+    -moz-transition: all var(--general-transition-duration) ease-in-out;
+    -ms-transition: all var(--general-transition-duration) ease-in-out;
+    -o-transition: all var(--general-transition-duration) ease-in-out;
+    transition: all var(--general-transition-duration) ease-in-out;
+}
+
+/* -- 2.3.1 Panel groups -- */
+
+/* Group of buttons and sliders inside an options panel, arranged horizontally */
+div.options-panel-group {
+    display: flex;
+    height: var(--button-diameter);
+    flex-flow: row nowrap;
+    align-items: center;
+    align-content: space-between;
+    gap: var(--options-gap);
+    padding: 0;
+    vertical-align: middle;
+    border-radius: var(--options-border-radius);
+    user-select: none;
+    -webkit-transition: all var(--general-transition-duration) ease-in-out;
+    -moz-transition: all var(--general-transition-duration) ease-in-out;
+    -ms-transition: all var(--general-transition-duration) ease-in-out;
+    -o-transition: all var(--general-transition-duration) ease-in-out;
+    transition: all var(--general-transition-duration) ease-in-out;
+}
+
+/* Group of buttons and sliders inside an options panel, arranged vertically */
+div.vertical-options-panel-group {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    align-content: space-between;
+    justify-content: center;
+    gap: var(--options-small-gap);
+    padding: 0;
+    border-radius: var(--options-border-radius);
+    user-select: none;
+    -webkit-transition: all var(--general-transition-duration) ease-in-out;
+    -moz-transition: all var(--general-transition-duration) ease-in-out;
+    -ms-transition: all var(--general-transition-duration) ease-in-out;
+    -o-transition: all var(--general-transition-duration) ease-in-out;
+    transition: all var(--general-transition-duration) ease-in-out;
+}
+
+/* Group containing the options and slideshow toggle */
+#toggles-options-panel-group {
+    justify-content: flex-end;
+}
+
+/* -- 2.3.2 Round button -- */
+
+button.round-button {
+    display: grid;
+    place-items: center;
+    width: var(--button-diameter);
+    height: var(--button-diameter);
+    vertical-align: middle;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: var(--button-radius);
+    -webkit-transition: all var(--general-transition-duration) ease-in-out;
+    -moz-transition: all var(--general-transition-duration) ease-in-out;
+    -ms-transition: all var(--general-transition-duration) ease-in-out;
+    -o-transition: all var(--general-transition-duration) ease-in-out;
+    transition: all var(--general-transition-duration) ease-in-out;
+}
+
+/* -- 2.3.3 Glass button -- */
+
+button.glass-grey {
+    background-color: var(--light-grey);
+    opacity: var(--button-inactive-opacity);
+    backdrop-filter: blur(var(--backdrop-blur));
+}
+
+button.glass-grey:hover {
+    opacity: var(--button-hover-opacity);
+}
+
+button.glass-grey:active {
+    opacity: var(--button-active-opacity);
+    transform: scale(var(--active-button-scale));
+    -webkit-transition: transform var(--button-active-transition-duration) ease-in-out;
+    -moz-transition: transform var(--button-active-transition-duration) ease-in-out;
+    -ms-transition: transform var(--button-active-transition-duration) ease-in-out;
+    -o-transition: transform var(--button-active-transition-duration) ease-in-out;
+    transition: transform var(--button-active-transition-duration) ease-in-out;
+}
+
+/* === 2.6 Loaders === */
+
+.loader, .loader:after {
+    border-radius: 50%;
+    width: 10em;
+    height: 10em;
+}
+
+.loader {
+    margin: 4px;
+    text-indent: 0em;
+    border-top: 1.75em solid var(--transparent-mid-grey);
+    border-right: 1.75em solid var(--transparent-mid-grey);
+    border-bottom: 1.75em solid var(--transparent-mid-grey);
+    transform: translateZ(0);
+    animation: load 1.1s infinite linear;
+    animation-play-state: paused;
+    visibility: collapse;
+}
+
+@keyframes load {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* -- 2.6.1 Plot loader -- */
+
+.loader.plot {
+    position: absolute;
+    z-index: 8;
+    font-size: 2px;
+    border-left: 1.75em solid #00000090;
+}
+
+/* -- 2.6.2 General loader -- */
+
+.loader.general {
+    top: 6pt;
+    left: 2pt;
+    font-size: 3px;
+    border-left: 1.75em solid #00000090;
+    visibility: visible;
+    animation-play-state: running;
+}
+
+/* -- 2.6.3 Loading container -- */
+
+div.loading-container {
+    position: fixed;
+    top: 0;
+    display: grid;
+    width: 100%;
+    height: 100%;
+    place-items: center;
+    backdrop-filter: blur(10px);
+    -webkit-transition: opacity 0.1s ease-in-out;
+    -moz-transition: opacity 0.1s ease-in-out;
+    -ms-transition: opacity 0.1s ease-in-out;
+    -o-transition: opacity 0.1s ease-in-out;
+    transition: opacity 0.1s ease-in-out;
+}
+
+/* Sets the loading container opacity to 0 */
+.loading-container.transparent {
+    opacity: 0;
+}
+
+/* == 2.7 Input boxes and sliders == */
+
+/* -- 2.7.1 Input box -- */
+
+/* Container to center the input box */
+div.input-container {
+    display: grid;
+    place-items: center;
+    margin-top: 10px;
+    font-family: 'Roboto-Mono', monospace;
+    font-size: 10pt;
+    font-weight: var(--bold-weight);
+}
+
+/* Input box */
+input.input-box {
+    min-width: 10px;
+    width: 40px;
+    margin-left: -2px;
+    margin-right: -2px;
+    background-color: #00000000;
+    outline: none;
+    border-width: 0;
+    border-bottom: #00000050 solid 2px;
+    color: var(--secondary);
+    text-align: center;
+    font-family: 'Roboto-Mono', monospace;
+    font-weight: var(--bold-weight);
+    font-size: 10pt;
+    caret-color: #8d8d8d;
+    transition: all .3 ease-in-out;
+}
+
+input.input-box:active {
+    border-color: var(--thm-blue);
+}
+
+input.input-box:hover {
+    border-color: #3494e8;
+}
+
+/* Hides arrows of input box */
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
