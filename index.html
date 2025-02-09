@@ -48,6 +48,12 @@
                     <!-- Path canvas -->
                     <canvas id="path-freehandfourier-canvas" name="plot" class="plot stacked">
                     </canvas>
+                    <!-- Fourier transform argument canvas -->
+                    <canvas id="transform-path-freehandfourier-canvas" name="plot" class="plot stacked">
+                    </canvas>
+                    <!-- Spectrum canvas -->
+                    <canvas id="spectrum-freehandfourier-canvas" name="plot" class="plot stacked">
+                    </canvas>
                     <!-- Points canvas -->
                     <canvas id="points-freehandfourier-canvas" name="plot" class="plot stacked">
                     </canvas>
@@ -80,6 +86,17 @@
                         class="plot-control round-button toggle-epicycles">
                         <span class="material-symbols-rounded grid-icon">
                             architecture
+                        </span>
+                    </button>
+                    <button id="freehandfourier-plot-toggle-drawing" class="plot-control round-button toggle-drawing">
+                        <span class="material-symbols-rounded grid-icon">
+                            gesture
+                        </span>
+                    </button>
+                    <button id="freehandfourier-plot-toggle-follow"
+                        class="plot-control round-button toggle-follow transparent">
+                        <span class="material-symbols-rounded grid-icon">
+                            point_scan
                         </span>
                     </button>
                     <!-- Toggle full screen button -->
@@ -115,17 +132,28 @@
                                 skip_next
                             </span>
                         </button>
-                        <!-- Next button -->
+                        <!-- Draw button -->
                         <button id="drawing-button" class="round-button glass-grey slider-control">
                             <span id="drawing-icon" class="material-symbols-rounded">
                                 draw
+                            </span>
+                        </button>
+                        <!-- Fourier transform button -->
+                        <button id="fourier-transform-button" class="round-button glass-grey slider-control">
+                            <span id="fourier-transform-icon" class="material-symbols-rounded">
+                                functions
+                            </span>
+                        </button>
+                        <!-- Mole Antonelliana -->
+                        <button id="mole-button" class="round-button glass-grey slider-control">
+                            <span id="mole-icon" class="material-symbols-rounded">
+                                draw_collage
                             </span>
                         </button>
                     </div>
 
                     <!-- Sliders panel group for param "N" -->
                     <div id="freehandfourier-param-N-group" class="plot-slider-group">
-                        <!-- Group comprised of number of coefficient and slider -->
                         <div class="plot-slider-controls-group">
                             <!-- Number of coefficients -->
                             <div class="plot-slider-value-container">
@@ -134,6 +162,18 @@
                             <!-- Slider -->
                             <input id="freehandfourier-param-N" class="plot-slider" type="range" min="0" max="100"
                                 value="0" step="1">
+                        </div>
+                    </div>
+                    <!-- Sliders panel group for param "n" -->
+                    <div id="freehandfourier-param-n-group" class="plot-slider-group transparent">
+                        <div class="plot-slider-controls-group">
+                            <!-- Frequency -->
+                            <div class="plot-slider-value-container">
+                                <span id="freehandfourier-param-n-value" class="plot-slider-value">$n = 0$</span>
+                            </div>
+                            <!-- Slider -->
+                            <input id="freehandfourier-param-n" class="plot-slider" type="range" min="0" max="100"
+                                value="0" step="1" disabled="true">
                         </div>
                     </div>
                 </div>
@@ -157,6 +197,7 @@
     <script src="js/src/page-controller.js"></script>
     <script src="js/src/util/coordinate-system.js"></script>
     <script src="js/src/plots/plot-structure.js"></script>
+    <script src="js/src/plots/drawing-coordinates.js"></script>
     <script src="js/src/plots/freehandfourier-plot.js"></script>
     <script src="js/src/plots/plots-manager.js"></script>
 </body>

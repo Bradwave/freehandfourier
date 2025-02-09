@@ -28,9 +28,10 @@ let plotsManager = new function () {
         plots.set('freehandfourier', new freehandfourierPlot("freehandfourier",
             {
                 viewportCenter: { x: 0, y: 0 },
-                initialPixelsPerUnit: 100,
+                initialPixelsPerUnit: 150,
                 parameters: [
-                    { id: "N" }
+                    { id: "N" },
+                    { id: "n" }
                 ],
                 labelSize: 15,
                 drawingColor: "#69d686",
@@ -43,6 +44,12 @@ let plotsManager = new function () {
                 pathColor: "#888888",
                 pathActiveColor: "#444444",
                 pathWidth: 5,
+                transformColor: "#f28aea", //#d742f588
+                transformPathWidth: 1,
+                inactiveSpectrumColor: "#888888",
+                spectrumColor: "#d742f5",
+                spectrumLineWidth: 2,
+                spectrumPointSize: 4,
                 backgroundColor: getCssVariable("incredibly-light-accent"),
                 axisColor: getCssVariable("highlight"),
                 axisLineWidth: 3,

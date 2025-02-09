@@ -450,10 +450,31 @@ button.toggle-grid {
     user-select: none;
 }
 
-/* Toggle grid button */
+/* Toggle epicycles button */
 button.toggle-epicycles {
     top: var(--options-margin);
     left: calc(var(--options-margin) + 2 * var(--button-diameter) + 2 * var(--options-small-gap));
+    user-select: none;
+}
+
+/* Toggle drawing button */
+button.toggle-drawing {
+    top: var(--options-margin);
+    left: calc(var(--options-margin) + 3 * var(--button-diameter) + 3 * var(--options-small-gap));
+    user-select: none;
+}
+
+/* Toggle drawing button */
+button.toggle-follow {
+    top: var(--options-margin);
+    left: calc(var(--options-margin) + 4 * var(--button-diameter) + 4 * var(--options-small-gap));
+    user-select: none;
+}
+
+/* Follow button when active */
+button.toggle-follow.active {
+    background-color: var(--accent);
+    color: var(--highlight);
     user-select: none;
 }
 
@@ -650,6 +671,11 @@ div.plot-slider-group {
     padding: 0;
 }
 
+/* Transparent group when inactive */
+div.plot-slider-group.transparent {
+    opacity: 0.4;
+}
+
 /* Group containing the sliders controls and its value */
 div.plot-slider-controls-group {
     display: flex;
@@ -686,7 +712,25 @@ button.round-button.slider-control:active {
     transition: transform var(--button-active-transition-duration) ease-in-out;
 }
 
+/* Slider value span */
+span.plot-slider-value {
+    width: 80px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    align-content: space-between;
+    justify-content: center;
+}
+
+/* drawing button when active */
 #drawing-button.active {
+    background-color: var(--accent);
+    color: var(--highlight);
+    user-select: none;
+}
+
+/* Fourier transform button when active */
+#fourier-transform-button.active {
     background-color: var(--accent);
     color: var(--highlight);
     user-select: none;
