@@ -643,12 +643,14 @@ let freehandfourierPlot = function (id, options) {
             else document.getElementById(id + "-param-" + sliderId + "-group").classList.remove("transparent");
         }
 
+        let drawingIndex = 0;
+
         // Draws the Mole Antonelliana
         document.getElementById("mole-button").onclick = () => {
             // Clears the previous drawing
             drawingPoints = [];
             // Computes the points
-            const bezierPoints = new PolyBezier(moleCoordinates);
+            const bezierPoints = new PolyBezier(drawingCoordinates[drawingIndex++ % drawingCoordinates.length]);
             drawingPoints = bezierPoints.samplePoints(10).map((point) => {
                 return {
                     x: point.re,
@@ -826,7 +828,7 @@ let freehandfourierPlot = function (id, options) {
             // Checks if the drawing mode is active
             if (isDrawingModeActive && eventsCache.length < 2) {
                 startDrawing(e);
-            } else if (e.pointerType == 'touch' && isDrawing && eventsCache > 1) {
+            } else if (e.pointerType == 'touch' && isDrawing) {
                 endDrawing();
                 removePointerFromCache(e);
             } else if (eventsCache.length < 2) {
@@ -1495,6 +1497,8 @@ let freehandfourierPlot = function (id, options) {
 
             // True if the previous point of the drawing was visible, false otherwise
             let wasPrevDrawingPointInbound = true;
+            // Resets the squared distance between subsequent points
+            let drawingDistanceSquared = 2;
             // Stores the number of points for later use
             const numOfPoints = drawingPoints.length;
 
@@ -1517,8 +1521,9 @@ let freehandfourierPlot = function (id, options) {
                     if (!wasPrevDrawingPointInbound) dCtx.moveTo(prevX, prevY);
 
                     // Draws the line only if it's greater than a given value
-                    distanceSquared = (x - prevX) ** 2 + (y - prevY) ** 2;
-                    if (distanceSquared > .1) dCtx.lineTo(x, y);
+                    const newDistance = (x - prevX) ** 2 + (y - prevY) ** 2;
+                    drawingDistanceSquared = drawingDistanceSquared > .25 ? newDistance : drawingDistanceSquared + newDistance;
+                    if (drawingDistanceSquared > .25) dCtx.lineTo(x, y);
 
                     wasPrevDrawingPointInbound = true;
                 } else if (wasPrevDrawingPointInbound) {
@@ -1676,6 +1681,8 @@ let freehandfourierPlot = function (id, options) {
 
             // True if the previous transform path point was visible
             let wasPrevTransformPointInbound = true;
+            // Resets the distance between two subsequent points
+            let transformDistanceSquared = 1;
 
             fCtx.beginPath();
             fCtx.moveTo(cs.toScreenX(transformArgPath[0].x), cs.toScreenY(transformArgPath[0].y));
@@ -1698,17 +1705,17 @@ let freehandfourierPlot = function (id, options) {
                     isInbound(x, y, cs.pixelsPerUnit * coefficients[0].amp) ||
                     isInbound(nextX, nextY, cs.pixelsPerUnit * coefficients[0].amp)
                 ) {
-                    let distanceSquared = 1;
                     if (i > 0) {
                         const prevX = cs.toScreenX(transformArgPath[i - 1].x);
                         const prevY = cs.toScreenY(transformArgPath[i - 1].y);
                         // If the previous point wasn't visible, it moves there
                         if (!wasPrevTransformPointInbound) fCtx.moveTo(prevX, prevY);
-                        // Computes the distance between the current and next point
-                        distanceSquared = (x - prevX) ** 2 + (y - prevY) ** 2;
+                        // Computes the distance between the current and next point or sums it to previous distance
+                        const newDistance = (x - prevX) ** 2 + (y - prevY) ** 2;
+                        let transformDistanceSquared = transformDistanceSquared > .25 ? newDistance : transformDistanceSquared + newDistance;
                     }
                     // Only draws the curve if it's big enough
-                    if (distanceSquared > .2) {
+                    if (transformDistanceSquared > .25) {
                         fCtx.quadraticCurveTo(x, y, nextX, nextY);
                     }
                     wasPrevTransformPointInbound = true;
@@ -1795,11 +1802,14 @@ let freehandfourierPlot = function (id, options) {
      */
     let wasPrevPathPointInbound;
 
+    let pathDistanceSquared = 1;
+
     function drawPath() {
         if (!isDrawing && !isSpectrumModeActive && path.length > 0) {
             /* -- Complete path --*/
 
             wasPrevPathPointInbound = true;
+            let pathDistanceSquared = 1;
 
             tCtx.strokeStyle = options.pathColor;
             tCtx.lineWidth = options.pathWidth - 1;
@@ -1886,17 +1896,17 @@ let freehandfourierPlot = function (id, options) {
         const y = cs.toScreenY(path[i].y);
         // Checks if visible
         if (isInbound(x, y)) {
-            let distanceSquared = 1;
             if (i > 0) {
                 const prevX = cs.toScreenX(path[i - 1].x);
                 const prevY = cs.toScreenY(path[i - 1].y);
                 // If the previous point wasn't visible, it moves there
                 if (!wasPrevPathPointInbound) tCtx.moveTo(prevX, prevY);
-                // Computes the distance between the current point and the previous one
-                distanceSquared = (x - prevX) ** 2 + (y - prevY) ** 2;
+                // Computes the distance between the current point and the previous one or sums it
+                const newDistance = (x - prevX) ** 2 + (y - prevY) ** 2;
+                pathDistanceSquared = pathDistanceSquared > .25 ? newDistance : pathDistanceSquared + newDistance;
             }
             // Only draws the segment if the current point and the previous one are far enough
-            if (distanceSquared > .15) tCtx.lineTo(x, y);
+            if (pathDistanceSquared > .25) tCtx.lineTo(x, y);
             wasPrevPathPointInbound = true;
         } else if (wasPrevPathPointInbound) {
             // Prevents line from ending abruptly
