@@ -1718,7 +1718,7 @@ let freehandfourierPlot = function (id, options) {
                         if (!wasPrevTransformPointInbound) fCtx.moveTo(prevX, prevY);
                         // Computes the distance between the current and next point or sums it to previous distance
                         const newDistance = (x - prevX) ** 2 + (y - prevY) ** 2;
-                        let transformDistanceSquared = transformDistanceSquared > .25 ? newDistance : transformDistanceSquared + newDistance;
+                        transformDistanceSquared = transformDistanceSquared > .25 ? newDistance : transformDistanceSquared + newDistance;
                     }
                     // Only draws the curve if it's big enough
                     if (transformDistanceSquared > .25) {
