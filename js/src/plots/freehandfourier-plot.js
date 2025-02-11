@@ -537,7 +537,10 @@ let freehandfourierPlot = function (id, options) {
             }, 50);
         }
 
-        // Executes when the play/pause button is released
+        document.getElementById("next-button").onpointerleave = () => {
+            clearInterval(skipInterval);
+        }
+
         document.getElementById("next-button").onpointerup = () => {
             clearInterval(skipInterval);
         }
@@ -564,8 +567,11 @@ let freehandfourierPlot = function (id, options) {
             }, 50);
         }
 
-        // Executes when the play/pause button is released
         document.getElementById("previous-button").onpointerup = () => {
+            clearInterval(skipInterval);
+        }
+
+        document.getElementById("previous-button").onpointerleave = () => {
             clearInterval(skipInterval);
         }
 
