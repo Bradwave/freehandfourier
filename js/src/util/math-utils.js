@@ -202,7 +202,7 @@ const analysisTools = new function () {
             X.push({
                 re: sum.real(),
                 im: sum.imag(),
-                freq: freq,
+                freq: freq <= N / 2 ? freq : -(N - freq),
                 amp: sum.abs(),
                 phase: sum.phase()
             });

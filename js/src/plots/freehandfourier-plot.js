@@ -327,7 +327,7 @@ let freehandfourierPlot = function (id, options) {
 
             for (let n = 0; n < N - 1; n++) {
                 const freq = coefficients[n].freq;
-                if (freq < usedFreq + 1 || freq > N - usedFreq - 1) {
+                if (Math.abs(freq) < usedFreq + 1) {
                     const radius = coefficients[n].amp;
                     const phase = coefficients[n].phase;
 
@@ -1620,7 +1620,7 @@ let freehandfourierPlot = function (id, options) {
                 // Stores frequency, radius and phase of the epicycles
                 const freq = coefficients[n].freq;
 
-                if (freq < usedFreq + 1 || freq > N - usedFreq - 1) {
+                if (Math.abs(freq) < usedFreq + 1) {
                     const radius = coefficients[n].amp;
                     const phase = coefficients[n].phase;
 
