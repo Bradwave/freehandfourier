@@ -711,6 +711,10 @@ div.plot-slider-value-container {
     font-size: calc(0.5 * var(--button-diameter));
 }
 
+#freehandfourier-param-dt-value {
+    font-size: calc(0.42 * var(--button-diameter));
+}
+
 button.round-button.slider-control:active {
     background-color: var(--accent);
     color: var(--highlight);

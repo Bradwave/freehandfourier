@@ -301,7 +301,39 @@ let freehandfourierPlot = function (id, options) {
         // The number of coefficients is stored
         N = coefficients.length;
         // The time increase is computed
-        dt = (2 * Math.PI) / N;
+        if (N > 0) {
+            dt = (2 * Math.PI) / N;
+            const dtSlider = document.getElementById(id + "-param-dt");
+            
+            // Sets default min and max
+            dtSlider.min = "0.001";
+            dtSlider.max = "0.01";
+
+            if (dt < parseFloat(dtSlider.min)) dtSlider.min = dt;
+            if (dt > parseFloat(dtSlider.max)) dtSlider.max = dt;
+            dtSlider.value = dt;
+
+            // Updates datalist
+            const dtDatalist = document.getElementById(id + "-param-dt-list");
+            dtDatalist.innerHTML = "";
+            const option = document.createElement("option");
+            option.value = dt;
+            dtDatalist.appendChild(option);
+
+            // Updates notch position
+            const notch = document.getElementById(id + "-param-dt-notch");
+            const min = parseFloat(dtSlider.min);
+            const max = parseFloat(dtSlider.max);
+            const percent = (dt - min) / (max - min);
+            
+            // Accounts for the thumb width
+            notch.style.left = `calc(var(--plot-slider-thumb-radius) + ${percent} * (100% - var(--plot-slider-thumb-diameter)))`;
+            notch.style.transform = "translateY(-50%)";
+            notch.style.marginLeft = "-1px";
+            notch.style.display = "block";
+
+            updateSliderValue("dt", dt.toFixed(4));
+        }
         // Updates the number of frequencies in use, based on the corresponding slider value
         updateUsedFreq();
         // Computes the spectrum points before reordering the coefficients
@@ -614,6 +646,7 @@ let freehandfourierPlot = function (id, options) {
                 disableButtons(["play-button", "previous-button", "next-button"]);
                 toggleSlider("N", true);
                 toggleSlider("n", false);
+                toggleSlider("dt", true);
 
                 // Stores the epicycles animation status to restart it later if necessary
                 wasEpicyclesRunningBeforeSpectrum = isEpicyclesRunning;
@@ -627,6 +660,7 @@ let freehandfourierPlot = function (id, options) {
                 activateButtons(["play-button", "previous-button", "next-button"]);
                 toggleSlider("N", false);
                 toggleSlider("n", true);
+                toggleSlider("dt", N <= 0);
 
                 // Plays the epicycles animation if it was playing before the spectrum mode was activated
                 isEpicyclesRunning = wasEpicyclesRunningBeforeSpectrum;
@@ -791,6 +825,7 @@ let freehandfourierPlot = function (id, options) {
 
             // Resets time
             time = 0;
+            toggleSlider("dt", N <= 0);
         }
 
         /**
@@ -1235,6 +1270,17 @@ let freehandfourierPlot = function (id, options) {
             // Computes the transform argument path
             computeTransformArgPath();
             // Clears everything and redraws the scene
+            // Clears everything and redraws the scene
+            redrawScene();
+        }
+
+        // Executes when the dt input changes
+        document.getElementById(id + "-param-dt").oninput = () => {
+            // Updates the time step
+            updateDt();
+            // Computes path again
+            computePath();
+            // Clears everything and redraws the scene
             redrawScene();
         }
     }
@@ -1368,6 +1414,18 @@ let freehandfourierPlot = function (id, options) {
         usedFreq = Math.round(Math.pow(parseFloat(slider.value) / parseFloat(slider.getAttribute("max")), 4) * N + 1);
         // Updates the slider value
         updateSliderValue("N", usedFreq);
+    }
+
+    /**
+     * Updates dt based on the slider value.
+     */
+    function updateDt() {
+        // Stores the slider element
+        const slider = document.getElementById(id + "-param-dt");
+        // Computes dt
+        dt = parseFloat(slider.value);
+        // Updates the slider value
+        updateSliderValue("dt", dt.toFixed(4));
     }
 
     /**

@@ -31,7 +31,8 @@ let plotsManager = new function () {
                 initialPixelsPerUnit: 150,
                 parameters: [
                     { id: "N" },
-                    { id: "n" }
+                    { id: "n" },
+                    { id: "dt" }
                 ],
                 labelSize: 15,
                 drawingColor: "#69d686",
